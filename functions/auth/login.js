@@ -2,10 +2,11 @@
 export async function onRequest(context) {
   const { env, request } = context;
   const url = new URL(request.url);
+
   const state = cryptoRandomString(24);
-  const clientId = env.GITHUB_CLIENT_ID;
-  const redirect = env.REDIRECT_URI || new URL('/functions/auth/callback', url.origin).toString();
-  const scope = env.GITHUB_SCOPE || 'public_repo';
+  const clientId = env.CLIENT_ID;                   // <-- 讀 Actions Variables
+  const redirect = new URL('/functions/auth/callback', url.origin).toString();
+  const scope = env.SCOPE || 'public_repo';         // 私有 repo 請設成 repo
 
   const authUrl = new URL('https://github.com/login/oauth/authorize');
   authUrl.searchParams.set('client_id', clientId);
